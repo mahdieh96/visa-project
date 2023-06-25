@@ -2,7 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./Header.css";
 import { Menu } from "../../Menu/Menu";
+import { useTranslation } from "react-i18next";
+
 export const Header = () => {
+  const { t, i18n } = useTranslation();
   const menuItems = [
     { text: "International Services", items: [], id: 0 },
     { text: "Visas", items: [], id: 1 },
@@ -10,6 +13,7 @@ export const Header = () => {
     { text: "About", items: [], id: 3 },
     { text: "Find out more", items: [], id: 4 },
   ];
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [menu, setMenu] = useState(menuItems);
   useEffect(() => {
     axios
@@ -29,9 +33,20 @@ export const Header = () => {
         });
       });
   }, []);
+  const changeLanguage = () => {
+    if (selectedLanguage === "en") {
+      i18n.changeLanguage("fa");
+      setSelectedLanguage("fa");
+    } else {
+      i18n.changeLanguage("en");
 
+      setSelectedLanguage("en");
+    }
+  };
   return (
     <div>
+      <h1>{t("i")}</h1>
+      <button onClick={changeLanguage}>language</button>
       <Menu items={menu} />
     </div>
   );
